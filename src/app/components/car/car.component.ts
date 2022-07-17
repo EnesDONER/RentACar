@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Car } from 'src/app/models/car';
 import { ActivatedRoute } from '@angular/router';
 import { CarService } from 'src/app/services/car.service';
+import { ToastrService } from 'ngx-toastr';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-car',
@@ -11,7 +13,11 @@ import { CarService } from 'src/app/services/car.service';
 export class CarComponent implements OnInit {
   cars:Car[] = [];
   dataLoaded=false;
-  constructor(private carservice:CarService,private activatedRoute:ActivatedRoute) { }
+  filterText="";
+  constructor(private carservice:CarService,private activatedRoute:ActivatedRoute,
+    private cartService:CartService,
+    private toastrService:ToastrService
+    ) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params=>{
@@ -31,5 +37,14 @@ export class CarComponent implements OnInit {
   getCarsByColor(colorId:number){
     this.carservice.getCarsByColor(colorId).subscribe(response=>{this.cars=response.data
     this.dataLoaded=true;});
+  }
+  addToCart(car:Car){
+    if(car.id==11){
+      this.toastrService.error("Hata,Bu ürün sepete eklenemez.")
+    }
+    else{
+      this.toastrService.success("Sepete eklendi",car.brandName);
+      this.cartService.addToCart(car);
+    }
   }
 }
