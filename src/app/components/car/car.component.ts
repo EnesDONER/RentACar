@@ -14,7 +14,9 @@ export class CarComponent implements OnInit {
   cars:Car[] = [];
   dataLoaded=false;
   filterText="";
-  constructor(private carservice:CarService,private activatedRoute:ActivatedRoute,
+  constructor(
+    private carservice:CarService,
+    private activatedRoute:ActivatedRoute,
     private cartService:CartService,
     private toastrService:ToastrService
     ) { }
@@ -23,6 +25,9 @@ export class CarComponent implements OnInit {
     this.activatedRoute.params.subscribe(params=>{
       if(params["colorId"]){
         this.getCarsByColor(params["colorId"])
+      }
+      else if(params["brandId"]){
+        this.getCarsByBrand(params["brandId"])
       }
       else{ this.getCars()}
     })
@@ -38,12 +43,17 @@ export class CarComponent implements OnInit {
     this.carservice.getCarsByColor(colorId).subscribe(response=>{this.cars=response.data
     this.dataLoaded=true;});
   }
+  getCarsByBrand(brandId:number){
+    this.carservice.getCarsByBrand(brandId).subscribe(response=>{this.cars=response.data
+    this.dataLoaded=true;
+   })
+  }
   addToCart(car:Car){
     if(car.id==11){
-      this.toastrService.error("Hata,Bu ürün sepete eklenemez.")
+      this.toastrService.error("Hata,Bu araç kiralanamaz.")
     }
     else{
-      this.toastrService.success("Sepete eklendi",car.brandName);
+      this.toastrService.success("Kiralandı "+car.brandName+"("+car.description+")");
       this.cartService.addToCart(car);
     }
   }

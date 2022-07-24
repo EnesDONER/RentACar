@@ -14,6 +14,9 @@ import { VatAddedPipe } from './pipes/vat-added.pipe';
 import { FilterPipePipe } from './pipes/filter-pipe.pipe';
 
 import { ToastrModule } from 'ngx-toastr';
+import { BrandComponent } from './components/brand/brand.component';
+import { CartSummaryComponent } from './components/cart-summary/cart-summary.component';
+import { PaymentComponent } from './components/payment/payment.component';
 
 
 @NgModule({
@@ -23,7 +26,10 @@ import { ToastrModule } from 'ngx-toastr';
     ColorComponent,
     NaviComponent,
     VatAddedPipe,
-    FilterPipePipe
+    FilterPipePipe,
+    BrandComponent,
+    CartSummaryComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
